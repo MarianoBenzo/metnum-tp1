@@ -8,31 +8,42 @@
 using namespace std;
 
 /* ESTRUCTURAS */
-struct Player{
-	int team_id;
-	int points;
+struct Match {
+	int date;
+	int player_1;
+	int player_1_points;
+	int player_2;
+	int player_2_points;
 
 	// Constructor por defecto
-	Player(): team_id(0), points(0){
-	}
-
+	Match(): date(0), player_1(0), player_1_points(0), player_2(0), player_2_points(0) {}
 	// Constructor
-	Player(int a, int b): team_id(a), points(b){
-	}
+	Match(int a, int b, int c, int d, int e): date(a), player_1(b), player_1_points(c), player_2(d), player_2_points(e) {}
+};
+
+struct Player {
+	int player_id;
+	int points;
+	int wins;
+	int loses;
+
+	Player(): player_id(0), points(0), wins(0), loses(0) {}
+	Player(int a, int b, int c, int d): player_id(a), points(b), wins(c), loses(d) {}
 };
 
 /* VARIABLES GLOBALES */
 
 int matchs_amount;
 int players_amount;
+vector<Match> matchs;
 vector<Player> players;
 
 /* FUNCIONES */
 
-void print_players() {
-	for (auto it = players.begin() ; it != players.end(); ++it) {
-		Player player = *it;
-		cout << "Team id: " << player.team_id << " - Points: " << player.points << endl;
+void print_matchs() {
+	for (auto it = matchs.begin() ; it != matchs.end(); ++it) {
+		Match match = *it;
+		cout << "Match " << match.date << " " << match.player_1 << " vs " << match.player_2 << ": " << match.player_1_points << " " << match.player_2_points << endl;
 	}
 }
 
@@ -88,8 +99,7 @@ void read_input_params(int argc, char *argv[]) {
 			pos = token.find(delimiter);
 			int player_j_points = stoi(token.substr(0, pos));
 
-			players.push_back(Player(player_i, player_i_points));
-			players.push_back(Player(player_j, player_j_points));
+			matchs.push_back(Match(date, player_i, player_i_points, player_j, player_j_points));
 		}
 	}
 
@@ -102,7 +112,7 @@ int main(int argc, char *argv[]) {
 
 	cout << "Players amount: " << players_amount << endl;
 	cout << "Matchs amount: " << matchs_amount << endl;
-	print_players();
+	print_matchs();
 
 	return 0;
 }
