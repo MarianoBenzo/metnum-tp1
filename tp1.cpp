@@ -40,11 +40,30 @@ vector<Player> players;
 
 /* FUNCIONES */
 
+void print_players() {
+	for (auto it = players.begin() ; it != players.end(); ++it) {
+		Player player = *it;
+		cout << "Player " << player.player_id << " Points:" << player.points << " Wins:" << player.wins << " loses:" << player.loses << endl;
+	}
+}
+
 void print_matchs() {
 	for (auto it = matchs.begin() ; it != matchs.end(); ++it) {
 		Match match = *it;
 		cout << "Match " << match.date << " " << match.player_1 << " vs " << match.player_2 << ": " << match.player_1_points << " " << match.player_2_points << endl;
 	}
+}
+
+void set_player_data(Match match) {
+	players[match.player_1].player_id = match.player_1;
+	players[match.player_1].points += match.player_1_points;
+	players[match.player_1].loses += match.player_1_points < match.player_2_points ? 1 : 0;
+	players[match.player_1].wins += match.player_1_points > match.player_2_points ? 1 : 0;
+
+	players[match.player_2].player_id = match.player_2;
+	players[match.player_2].points += match.player_2_points;
+	players[match.player_2].loses += match.player_2_points < match.player_1_points ? 1 : 0;
+	players[match.player_2].wins += match.player_2_points > match.player_1_points ? 1 : 0;
 }
 
 void read_input_params(int argc, char *argv[]) {
@@ -74,6 +93,8 @@ void read_input_params(int argc, char *argv[]) {
 	players_amount = stoi(line.substr(0, pos));
 	matchs_amount = stoi(line.substr(pos, line.length()));
 
+	players = vector<Player> (players_amount+1);
+
 	while (! file.eof()) {
 		getline(file, line);
 		string token = line;
@@ -85,21 +106,24 @@ void read_input_params(int argc, char *argv[]) {
 
 			token = token.substr(pos + 1, token_end);
 			pos = token.find(delimiter);
-			int player_i = stoi(token.substr(0, pos));
+			int player_1 = stoi(token.substr(0, pos));
 
 			token = token.substr(pos + 1, token_end);
 			pos = token.find(delimiter);
-			int player_i_points = stoi(token.substr(0, pos));
+			int player_1_points = stoi(token.substr(0, pos));
 
 			token = token.substr(pos + 1, token_end);
 			pos = token.find(delimiter);
-			int player_j = stoi(token.substr(0, pos));
+			int player_2 = stoi(token.substr(0, pos));
 
 			token = token.substr(pos + 1, token_end);
 			pos = token.find(delimiter);
-			int player_j_points = stoi(token.substr(0, pos));
+			int player_2_points = stoi(token.substr(0, pos));
 
-			matchs.push_back(Match(date, player_i, player_i_points, player_j, player_j_points));
+			Match match = Match(date, player_1, player_1_points, player_2, player_2_points);
+			matchs.push_back(match);
+
+			set_player_data(match);
 		}
 	}
 
@@ -112,7 +136,9 @@ int main(int argc, char *argv[]) {
 
 	cout << "Players amount: " << players_amount << endl;
 	cout << "Matchs amount: " << matchs_amount << endl;
+
 	print_matchs();
+	print_players();
 
 	return 0;
 }
