@@ -78,7 +78,8 @@ int main(int argc, char *argv[]) {
 
     Tournament tournament = read_input_params(argc, argv);
 
-    tournament.print();
+    //tournament.print();
+    tournament.printRanking();
 
     return 0;
 }
