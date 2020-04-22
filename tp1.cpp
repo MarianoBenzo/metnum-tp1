@@ -36,8 +36,7 @@ Tournament read_input_params(int argc, char *argv[]) {
 
     int teams_amount = stoi(line.substr(0, pos));
     int matches_amount = stoi(line.substr(pos, line.length()));
-
-    vector <Match> matches;// = vector<Match> (matches_amount + 1);
+    vector <Match> matches;
 
     while (!file.eof()) {
         getline(file, line);
@@ -72,7 +71,7 @@ Tournament read_input_params(int argc, char *argv[]) {
 
     file.close();
 
-    return Tournament(matches_amount, teams_amount, matches);
+    return Tournament(method, matches_amount, teams_amount, matches);
 }
 
 int main(int argc, char *argv[]) {

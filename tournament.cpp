@@ -3,13 +3,15 @@ using namespace std;
 class Tournament {
 
 private:
+    int method;
     int matches_amount;
     int teams_amount;
     vector <Match> matches;
     vector <Team> teams;
 
 public:
-    Tournament(int ma, int ta, vector <Match> ms) {
+    Tournament(int m, int ma, int ta, vector <Match> ms) {
+        method = m;
         matches_amount = ma;
         teams_amount = ta;
         matches = ms;
@@ -49,9 +51,48 @@ public:
         return teams;
     }
 
+    vector <tuple<int, float>> getRanking() {
+        switch (method) {
+            case 0:
+                return getRankingCMM();
+            case 1:
+                return getRankingWP();
+            default:
+                return getRankingWP();
+        }
+    }
+
+    vector <tuple<int, float>> getRankingCMM() {
+        vector <tuple<int, float>> ranking;
+
+        for (auto it = teams.begin(); it != teams.end(); ++it) {
+            Team team = *it;
+            tuple<int, float> teamRating = make_tuple(team.getId(), team.getRatingWP());
+            ranking.push_back(teamRating);
+        }
+
+        return ranking;
+    }
+
+    vector <tuple<int, float>> getRankingWP() {
+        vector <tuple<int, float>> ranking;
+
+        for (auto it = teams.begin(); it != teams.end(); ++it) {
+            Team team = *it;
+            tuple<int, float> teamRating = make_tuple(team.getId(), team.getRatingWP());
+            ranking.push_back(teamRating);
+        }
+
+        sort(ranking.begin(), ranking.end(),
+             [](const tuple<int, float> &a, const tuple<int, float> &b) -> bool {
+                 return std::get<1>(a) > std::get<1>(b);
+             });
+
+        return ranking;
+    }
+
     void print() {
 
-        cout << "Teams amount: " << teams_amount << endl;
         cout << "Matches amount: " << matches_amount << endl;
 
         for (auto it = matches.begin(); it != matches.end(); ++it) {
@@ -59,9 +100,19 @@ public:
             match.print();
         }
 
+        cout << "Teams amount: " << teams_amount << endl;
+
         for (auto it = teams.begin(); it != teams.end(); ++it) {
             Team team = *it;
             team.print();
+        }
+
+        cout << "Ranking " << method << ": " << endl;
+
+        vector <tuple<int, float>> ranking = getRanking();
+        for (auto it = ranking.begin(); it != ranking.end(); ++it) {
+            tuple<int, float> team = *it;
+            cout << get<0>(team) << " " << get<1>(team) << endl;
         }
     }
 };

@@ -25,8 +25,8 @@ public:
         return loses;
     }
 
-    int getRatingWP() {
-        return wins / (wins + loses);
+    float getRatingWP() {
+        return float(wins) / (float(wins) + float(loses));
     }
 
     void setId(int team_id) {
