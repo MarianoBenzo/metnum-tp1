@@ -1,6 +1,11 @@
 all:
-	g++ -std=c++11 tp1.cpp -o tp1
+	g++ -std=c++11 -O2 -c ./tournament.cpp -o ./tournament.o
+	g++ -std=c++11 -O2 -c ./tp1.cpp -o ./tp1.o
+	g++ -std=c++11 -O2 -c ./match.cpp -o ./match.o
+	g++ -std=c++11 -O2 -c ./team.cpp -o ./team.o
+	g++ -o ./tp ./tournament.o ./tp1.o ./match.o ./team.o
 clean:
-	rm -f tp1.o tp1
+	rm -f *.o
+	rm -f tp
 run:
-	./tp1 "nba_2016_scores.dat" "output.out" 0
+	./tp "nba_2016_scores.dat" "output.out" 0

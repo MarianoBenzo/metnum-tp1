@@ -4,9 +4,22 @@
 #include <stdlib.h>
 #include <iomanip>
 #include <fstream>
+
+#ifndef TEAM_C
+#define TEAM_C
 #include "team.cpp"
-#include "match.cpp"
+#endif
+
+#ifndef TOURNAMENT_C
+#define TOURNAMENT_C
 #include "tournament.cpp"
+#endif
+
+#ifndef MATCH_C
+#define MATCH_C
+#include "match.cpp"
+#endif
+
 
 using namespace std;
 

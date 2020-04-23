@@ -1,5 +1,16 @@
 #include <cmath>
 #include <stdio.h>
+#include <vector>
+
+#ifndef TEAM_C
+#define TEAM_C
+#include "team.cpp"
+#endif
+
+#ifndef MATCH_C
+#define MATCH_C
+#include "match.cpp"
+#endif
 
 using namespace std;
 
