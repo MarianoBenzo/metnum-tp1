@@ -71,7 +71,7 @@ Tournament read_input_params(int argc, char *argv[]) {
 
     file.close();
 
-    return Tournament(method, matches_amount, teams_amount, matches, ranking_output_path.c_str());
+    return Tournament(method, matches_amount, teams_amount, matches, ranking_output_path);
 }
 
 int main(int argc, char *argv[]) {

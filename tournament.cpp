@@ -11,10 +11,10 @@ private:
     int teams_amount;
     vector <Match> matches;
     vector <Team> teams;
-    const char *ranking_output_file;
+    string ranking_output_file;
 
 public:
-    Tournament(int m, int ma, int ta, vector <Match> ms, const char* output_file) {
+    Tournament(int m, int ma, int ta, vector <Match> ms, string output_file) {
         method = m;
         matches_amount = ma;
         teams_amount = ta;
@@ -221,8 +221,7 @@ public:
     }
 
     void writeRankingOutput() {
-        FILE *fp;
-        fp = fopen(ranking_output_file, "w");
+        FILE *fp = fopen(ranking_output_file.c_str(), "w");
         vector <tuple<int, float>> ranking = getRanking();
 
         if (fp != NULL) {
