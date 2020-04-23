@@ -1,4 +1,5 @@
 #include <cmath>
+#include <stdio.h>
 
 using namespace std;
 
@@ -10,13 +11,15 @@ private:
     int teams_amount;
     vector <Match> matches;
     vector <Team> teams;
+    const char *ranking_output_file;
 
 public:
-    Tournament(int m, int ma, int ta, vector <Match> ms) {
+    Tournament(int m, int ma, int ta, vector <Match> ms, const char* output_file) {
         method = m;
         matches_amount = ma;
         teams_amount = ta;
         matches = ms;
+        ranking_output_file = output_file;
         teams = vector<Team>(teams_amount);
 
         for (auto it = matches.begin(); it != matches.end(); ++it) {
@@ -171,10 +174,10 @@ public:
             ranking.push_back(teamRating);
         }
 
-        sort(ranking.begin(), ranking.end(),
-             [](const tuple<int, float> &a, const tuple<int, float> &b) -> bool {
-                 return std::get<1>(a) > std::get<1>(b);
-             });
+        // sort(ranking.begin(), ranking.end(),
+        //      [](const tuple<int, float> &a, const tuple<int, float> &b) -> bool {
+        //          return std::get<1>(a) > std::get<1>(b);
+        //      });
 
         return ranking;
     }
@@ -215,5 +218,22 @@ public:
             tuple<int, float> team = *it;
             cout << get<1>(team) << endl;
         }
+    }
+
+    void writeRankingOutput() {
+        FILE *fp;
+        fp = fopen(ranking_output_file, "w");
+        vector <tuple<int, float>> ranking = getRanking();
+
+        if (fp != NULL) {
+            for(int i = 0; i < ranking.size(); i++){
+                fprintf (fp, "%f\n", get<1>(ranking[i]));
+            }
+        } else {
+            cout << "Error al abrir el archivo: " << ranking_output_file << endl;
+            exit(1);
+        }
+
+        fclose(fp);
     }
 };

@@ -71,15 +71,14 @@ Tournament read_input_params(int argc, char *argv[]) {
 
     file.close();
 
-    return Tournament(method, matches_amount, teams_amount, matches);
+    return Tournament(method, matches_amount, teams_amount, matches, ranking_output_path.c_str());
 }
 
 int main(int argc, char *argv[]) {
 
     Tournament tournament = read_input_params(argc, argv);
 
-    //tournament.print();
-    tournament.printRanking();
+    tournament.writeRankingOutput();
 
     return 0;
 }
