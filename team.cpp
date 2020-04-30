@@ -26,8 +26,8 @@ public:
         return loses;
     }
 
-    float getRatingWP() {
-        return float(wins) / (float(wins) + float(loses));
+    double getRatingWP() {
+        return double(wins) / (double(wins) + double(loses));
     }
 
     void setId(int team_id) {

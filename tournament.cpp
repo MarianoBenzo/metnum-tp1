@@ -67,7 +67,7 @@ public:
         return teams;
     }
 
-    vector <tuple<int, float>> getRanking() {
+    vector <tuple<int, double>> getRanking() {
         switch (method) {
             case 0:
                 return getRankingCMM();
@@ -78,15 +78,15 @@ public:
         }
     }
 
-    vector <tuple<int, float>> getRankingCMM() {
+    vector <tuple<int, double>> getRankingCMM() {
 
-        float eps = 0.000001;
+        double eps = 0.00000000000001;
 
-        vector <vector <float>> C;
+        vector <vector <double>> C;
 
         // Inicializo C con caso base (sin matches)
         for (int i = 0; i < teams_amount; i++) {
-            vector<float> column;
+            vector<double> column;
             for (int j = 0; j < teams_amount; j++) {
                 if(i == j) {
                     column.push_back(2);
@@ -111,17 +111,17 @@ public:
         }
 
         // Lleno b
-        vector <float> b;
+        vector <double> b;
         for (auto it = teams.begin(); it != teams.end(); ++it) {
             Team team = *it;
-            float b_team = 1 + ((team.getWins() - team.getLoses()) / 2.0);
+            double b_team = 1 + ((team.getWins() - team.getLoses()) / 2.0);
             b.push_back(b_team);
         }
 
         // Hago eliminacion gaussiana en C
         for (int i = 0; i < C.size() - 1; i++) {
             for (int j = i + 1; j < C.size(); j++) {
-                float m = float(C[j][i]) / float(C[i][i]);
+                double m = double(C[j][i]) / double(C[i][i]);
                 for (int k = i; k < C.size() + 1; k++) {
                     if( k == C.size()) {
                         b[j] = abs(b[j] - (m * b[i])) < eps ? 0 : b[j] - (m * b[i]);
@@ -133,21 +133,21 @@ public:
         }
 
         // Calculo r
-        vector <float> r = vector<float>(teams_amount);
+        vector <double> r = vector<double>(teams_amount);
         for (int i = r.size() - 1; i >= 0; i--) {
-            float numerator = b[i];
+            double numerator = b[i];
             for (int j = i + 1; j < r.size(); j++) {
                 numerator = abs(numerator - (C[i][j] * r[j])) < eps ? 0 : numerator - (C[i][j] * r[j]);
             }
             r[i] = numerator / C[i][i];
         }
 
-        vector <tuple<int, float>> ranking;
+        vector <tuple<int, double>> ranking;
 
         for (auto it = teams.begin(); it != teams.end(); ++it) {
             Team team = *it;
             int team_index = team.getId() - 1;
-            tuple<int, float> teamRating = make_tuple(team.getId(), r[team_index]);
+            tuple<int, double> teamRating = make_tuple(team.getId(), r[team_index]);
             ranking.push_back(teamRating);
         }
 /*
@@ -162,31 +162,31 @@ public:
         // Print b
         cout << "b: " << endl;
         for (auto it = b.begin(); it != b.end(); ++it) {
-            float b_team = *it;
+            double b_team = *it;
             cout << b_team << endl;
         }
 
         // Print r
         cout << "r: " << endl;
         for (auto it = r.begin(); it != r.end(); ++it) {
-            float r_team = *it;
+            double r_team = *it;
             cout << r_team << endl;
         }
 */
         return ranking;
     }
 
-    vector <tuple<int, float>> getRankingWP() {
-        vector <tuple<int, float>> ranking;
+    vector <tuple<int, double>> getRankingWP() {
+        vector <tuple<int, double>> ranking;
 
         for (auto it = teams.begin(); it != teams.end(); ++it) {
             Team team = *it;
-            tuple<int, float> teamRating = make_tuple(team.getId(), team.getRatingWP());
+            tuple<int, double> teamRating = make_tuple(team.getId(), team.getRatingWP());
             ranking.push_back(teamRating);
         }
 
         // sort(ranking.begin(), ranking.end(),
-        //      [](const tuple<int, float> &a, const tuple<int, float> &b) -> bool {
+        //      [](const tuple<int, double> &a, const tuple<int, double> &b) -> bool {
         //          return std::get<1>(a) > std::get<1>(b);
         //      });
 
@@ -211,29 +211,29 @@ public:
 
         cout << "Ranking Ordenado" << method << ": " << endl;
 
-        vector <tuple<int, float>> ranking = getRanking();
+        vector <tuple<int, double>> ranking = getRanking();
         sort(ranking.begin(), ranking.end(),
-             [](const tuple<int, float> &a, const tuple<int, float> &b) -> bool {
+             [](const tuple<int, double> &a, const tuple<int, double> &b) -> bool {
                  return std::get<1>(a) > std::get<1>(b);
              });
 
         for (auto it = ranking.begin(); it != ranking.end(); ++it) {
-            tuple<int, float> team = *it;
+            tuple<int, double> team = *it;
             cout << get<0>(team) << "\t" << get<1>(team) << endl;
         }
     }
 
     void printRanking() {
-        vector <tuple<int, float>> ranking = getRanking();
+        vector <tuple<int, double>> ranking = getRanking();
         for (auto it = ranking.begin(); it != ranking.end(); ++it) {
-            tuple<int, float> team = *it;
+            tuple<int, double> team = *it;
             cout << get<1>(team) << endl;
         }
     }
 
     void writeRankingOutput() {
         FILE *fp = fopen(ranking_output_file.c_str(), "w");
-        vector <tuple<int, float>> ranking = getRanking();
+        vector <tuple<int, double>> ranking = getRanking();
 
         if (fp != NULL) {
             for(int i = 0; i < ranking.size(); i++){
