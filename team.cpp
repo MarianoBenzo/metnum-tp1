@@ -43,6 +43,6 @@ public:
     }
 
     void print() {
-        cout << "Team " << id << " Wins:" << wins << " Loses:" << loses << endl;
+        cout << "Team " << id << " Wins: " << wins << " Loses: " << loses << " Total: " << wins + loses << endl;
     }
 };
