@@ -1,6 +1,8 @@
 #include <cmath>
 #include <stdio.h>
 #include <vector>
+#include <algorithm>
+#include <tuple>
 
 #ifndef TEAM_C
 #define TEAM_C
