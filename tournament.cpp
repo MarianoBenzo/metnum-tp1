@@ -150,29 +150,7 @@ public:
             tuple<int, double> teamRating = make_tuple(team.getId(), r[team_index]);
             ranking.push_back(teamRating);
         }
-/*
-        // Print C
-        cout << "C: " << endl;
-        for (int i = 0; i < C.size(); i++) {
-            for (int j = 0; j < C[i].size(); j++)
-                cout << C[i][j] << "\t";
-            cout << endl;
-        }
 
-        // Print b
-        cout << "b: " << endl;
-        for (auto it = b.begin(); it != b.end(); ++it) {
-            double b_team = *it;
-            cout << b_team << endl;
-        }
-
-        // Print r
-        cout << "r: " << endl;
-        for (auto it = r.begin(); it != r.end(); ++it) {
-            double r_team = *it;
-            cout << r_team << endl;
-        }
-*/
         return ranking;
     }
 
@@ -184,11 +162,6 @@ public:
             tuple<int, double> teamRating = make_tuple(team.getId(), team.getRatingWP());
             ranking.push_back(teamRating);
         }
-
-        // sort(ranking.begin(), ranking.end(),
-        //      [](const tuple<int, double> &a, const tuple<int, double> &b) -> bool {
-        //          return std::get<1>(a) > std::get<1>(b);
-        //      });
 
         return ranking;
     }
